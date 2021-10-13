@@ -24,7 +24,6 @@ library(tidyverse)
 ``` r
 library(readxl)
 library(haven)
-library(ggplot2)
 data("instacart")
 ```
 
@@ -150,7 +149,7 @@ ggplot(df_filter, aes(x = aisle_id, y = n_obs)) + geom_point() +
     x = "Aisle ID",
     y = "Number of Items",
     caption = "Data from Instacart"
-  )
+  )  + theme_minimal()
 ```
 
 ![](Homework3_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
