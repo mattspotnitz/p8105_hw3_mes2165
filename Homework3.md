@@ -24,6 +24,7 @@ library(tidyverse)
 ``` r
 library(readxl)
 library(haven)
+library(ggplot2)
 data("instacart")
 ```
 
@@ -136,3 +137,13 @@ df %>% group_by(aisle_id) %>% summarize(n_obs = n()) %>% arrange(desc(n_obs))
 \#On the basis of this output, there are 134 aisle IDs. The aisle ids
 with the highest frequencies are 83, 24, 123, 120, 21, 115, 84, 107, 91,
 112.
+
+\#I will make a data frame that filters to aisles with frequencies &gt;
+10,000.
+
+``` r
+df_filter = df %>% group_by(aisle_id) %>% summarize(n_obs = n()) %>% filter(n_obs > 10000) %>% arrange(aisle_id)
+ggplot(df_filter, aes(x = aisle_id, y = n_obs)) + geom_point()
+```
+
+![](Homework3_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
