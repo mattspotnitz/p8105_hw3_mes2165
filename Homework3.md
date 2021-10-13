@@ -159,12 +159,10 @@ named “baking ingredients”, “dog food care” or “packaged vegetables
 fruits”. I will filter on those aisles, group them, count them, and then
 filter to the 3 most common items.
 
-\#I need to mrge with product name
-
 ``` r
 df_food = df %>% filter (aisle == "baking ingredients" | aisle ==  "dog food care" | aisle == "packaged vegetables fruits") %>% group_by(aisle) %>% count(product_id, product_name)
 
-df_food_filter = df_food %>% filter(rank(desc(n))<= 3) %>% arrange(desc(n))
+df_food_filter = df_food %>% filter(rank(desc(n))<= 3) %>% arrange(aisle, desc(n))
                     
 df_food_filter
 ```
@@ -173,15 +171,15 @@ df_food_filter
     ## # Groups:   aisle [3]
     ##   aisle                      product_id product_name                           n
     ##   <chr>                           <int> <chr>                              <int>
-    ## 1 packaged vegetables fruits      21903 Organic Baby Spinach                9784
-    ## 2 packaged vegetables fruits      27966 Organic Raspberries                 5546
-    ## 3 packaged vegetables fruits      39275 Organic Blueberries                 4966
-    ## 4 baking ingredients              23537 Light Brown Sugar                    499
-    ## 5 baking ingredients              23405 Pure Baking Soda                     387
-    ## 6 baking ingredients              49533 Cane Sugar                           336
-    ## 7 dog food care                     722 Snack Sticks Chicken & Rice Recip…    30
-    ## 8 dog food care                   23329 Organix Chicken & Brown Rice Reci…    28
-    ## 9 dog food care                   17471 Small Dog Biscuits                    26
+    ## 1 baking ingredients              23537 Light Brown Sugar                    499
+    ## 2 baking ingredients              23405 Pure Baking Soda                     387
+    ## 3 baking ingredients              49533 Cane Sugar                           336
+    ## 4 dog food care                     722 Snack Sticks Chicken & Rice Recip…    30
+    ## 5 dog food care                   23329 Organix Chicken & Brown Rice Reci…    28
+    ## 6 dog food care                   17471 Small Dog Biscuits                    26
+    ## 7 packaged vegetables fruits      21903 Organic Baby Spinach                9784
+    ## 8 packaged vegetables fruits      27966 Organic Raspberries                 5546
+    ## 9 packaged vegetables fruits      39275 Organic Blueberries                 4966
 
 \#\#Problem 1 -fourth part. Table of hour of the day when pink lady
 apples and coffee ice cream are ordered. I am stumped on part four of
