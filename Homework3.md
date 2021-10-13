@@ -183,10 +183,33 @@ df_food_filter
 
 \#\#Problem 1 -fourth part. Table of hour of the day when pink lady
 apples and coffee ice cream are ordered. I am stumped on part four of
-problem 1 too!!! \#\`\`\`{r} \#df\_food = df %&gt;% filter
-(product\_name == “Pink Lady Apples” \| product\_name == \#“Coffee Ice
-Cream”) %&gt;% group\_by(product\_name) %&gt;% summarize(product\_name,
-mean\_hour = mean(order\_hour\_of\_day)) %&gt;% pivot\_wider(names\_from
-= order\_dow, values\_from = mean\_hour)
+problem 1 too!!!
 
-\#df\_food \`\`\`
+``` r
+mutate_df = df  %>% filter ((product_name == "Pink Lady Apples") | (product_name == "Coffee Ice Cream")) %>% group_by(product_name, order_dow) %>% summarize(mean_hour = mean(order_hour_of_day))
+```
+
+    ## `summarise()` has grouped output by 'product_name'. You can override using the `.groups` argument.
+
+``` r
+mutate_df
+```
+
+    ## # A tibble: 14 × 3
+    ## # Groups:   product_name [2]
+    ##    product_name     order_dow mean_hour
+    ##    <chr>                <int>     <dbl>
+    ##  1 Coffee Ice Cream         0      13.8
+    ##  2 Coffee Ice Cream         1      14.3
+    ##  3 Coffee Ice Cream         2      15.4
+    ##  4 Coffee Ice Cream         3      15.3
+    ##  5 Coffee Ice Cream         4      15.2
+    ##  6 Coffee Ice Cream         5      12.3
+    ##  7 Coffee Ice Cream         6      13.8
+    ##  8 Pink Lady Apples         0      13.4
+    ##  9 Pink Lady Apples         1      11.4
+    ## 10 Pink Lady Apples         2      11.7
+    ## 11 Pink Lady Apples         3      14.2
+    ## 12 Pink Lady Apples         4      11.6
+    ## 13 Pink Lady Apples         5      12.8
+    ## 14 Pink Lady Apples         6      11.9
