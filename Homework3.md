@@ -192,24 +192,12 @@ mutate_df = df  %>% filter ((product_name == "Pink Lady Apples") | (product_name
     ## `summarise()` has grouped output by 'product_name'. You can override using the `.groups` argument.
 
 ``` r
-mutate_df
+mutate_df %>%  pivot_wider(names_from = order_dow, values_from = mean_hour)
 ```
 
-    ## # A tibble: 14 × 3
+    ## # A tibble: 2 × 8
     ## # Groups:   product_name [2]
-    ##    product_name     order_dow mean_hour
-    ##    <chr>                <int>     <dbl>
-    ##  1 Coffee Ice Cream         0      13.8
-    ##  2 Coffee Ice Cream         1      14.3
-    ##  3 Coffee Ice Cream         2      15.4
-    ##  4 Coffee Ice Cream         3      15.3
-    ##  5 Coffee Ice Cream         4      15.2
-    ##  6 Coffee Ice Cream         5      12.3
-    ##  7 Coffee Ice Cream         6      13.8
-    ##  8 Pink Lady Apples         0      13.4
-    ##  9 Pink Lady Apples         1      11.4
-    ## 10 Pink Lady Apples         2      11.7
-    ## 11 Pink Lady Apples         3      14.2
-    ## 12 Pink Lady Apples         4      11.6
-    ## 13 Pink Lady Apples         5      12.8
-    ## 14 Pink Lady Apples         6      11.9
+    ##   product_name       `0`   `1`   `2`   `3`   `4`   `5`   `6`
+    ##   <chr>            <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+    ## 1 Coffee Ice Cream  13.8  14.3  15.4  15.3  15.2  12.3  13.8
+    ## 2 Pink Lady Apples  13.4  11.4  11.7  14.2  11.6  12.8  11.9
