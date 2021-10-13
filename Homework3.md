@@ -139,11 +139,18 @@ with the highest frequencies are 83, 24, 123, 120, 21, 115, 84, 107, 91,
 112.
 
 \#I will make a data frame that filters to aisles with frequencies &gt;
-10,000.
+10,000, and then plot frequencies (or number of items) vs. Aisle ID.
 
 ``` r
 df_filter = df %>% group_by(aisle_id) %>% summarize(n_obs = n()) %>% filter(n_obs > 10000) %>% arrange(aisle_id)
-ggplot(df_filter, aes(x = aisle_id, y = n_obs)) + geom_point()
+
+ggplot(df_filter, aes(x = aisle_id, y = n_obs)) + geom_point() + 
+  labs(
+    title = "Number of Items vs. Aisle ID",
+    x = "Aisle ID",
+    y = "Number of Items",
+    caption = "Data from Instacart"
+  )
 ```
 
 ![](Homework3_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
