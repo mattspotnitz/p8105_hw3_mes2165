@@ -7,5 +7,132 @@ Homework3
 
 ``` r
 library(p8105.datasets)
+library(tidyverse)
+```
+
+    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+
+    ## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+    ## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
+    ## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+    ## ✓ readr   2.0.1     ✓ forcats 0.5.1
+
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
+library(readxl)
+library(haven)
 data("instacart")
 ```
+
+\#\#inspect the dataset
+
+``` r
+df = instacart
+df = janitor::clean_names(df)
+str(df)
+```
+
+    ## tibble [1,384,617 × 15] (S3: tbl_df/tbl/data.frame)
+    ##  $ order_id              : int [1:1384617] 1 1 1 1 1 1 1 1 36 36 ...
+    ##  $ product_id            : int [1:1384617] 49302 11109 10246 49683 43633 13176 47209 22035 39612 19660 ...
+    ##  $ add_to_cart_order     : int [1:1384617] 1 2 3 4 5 6 7 8 1 2 ...
+    ##  $ reordered             : int [1:1384617] 1 1 0 0 1 0 0 1 0 1 ...
+    ##  $ user_id               : int [1:1384617] 112108 112108 112108 112108 112108 112108 112108 112108 79431 79431 ...
+    ##  $ eval_set              : chr [1:1384617] "train" "train" "train" "train" ...
+    ##  $ order_number          : int [1:1384617] 4 4 4 4 4 4 4 4 23 23 ...
+    ##  $ order_dow             : int [1:1384617] 4 4 4 4 4 4 4 4 6 6 ...
+    ##  $ order_hour_of_day     : int [1:1384617] 10 10 10 10 10 10 10 10 18 18 ...
+    ##  $ days_since_prior_order: int [1:1384617] 9 9 9 9 9 9 9 9 30 30 ...
+    ##  $ product_name          : chr [1:1384617] "Bulgarian Yogurt" "Organic 4% Milk Fat Whole Milk Cottage Cheese" "Organic Celery Hearts" "Cucumber Kirby" ...
+    ##  $ aisle_id              : int [1:1384617] 120 108 83 83 95 24 24 21 2 115 ...
+    ##  $ department_id         : int [1:1384617] 16 16 4 4 15 4 4 16 16 7 ...
+    ##  $ aisle                 : chr [1:1384617] "yogurt" "other creams cheeses" "fresh vegetables" "fresh vegetables" ...
+    ##  $ department            : chr [1:1384617] "dairy eggs" "dairy eggs" "produce" "produce" ...
+    ##  - attr(*, "spec")=
+    ##   .. cols(
+    ##   ..   order_id = col_integer(),
+    ##   ..   product_id = col_integer(),
+    ##   ..   add_to_cart_order = col_integer(),
+    ##   ..   reordered = col_integer(),
+    ##   ..   user_id = col_integer(),
+    ##   ..   eval_set = col_character(),
+    ##   ..   order_number = col_integer(),
+    ##   ..   order_dow = col_integer(),
+    ##   ..   order_hour_of_day = col_integer(),
+    ##   ..   days_since_prior_order = col_integer(),
+    ##   ..   product_name = col_character(),
+    ##   ..   aisle_id = col_integer(),
+    ##   ..   department_id = col_integer(),
+    ##   ..   aisle = col_character(),
+    ##   ..   department = col_character()
+    ##   .. )
+
+``` r
+head(df)
+```
+
+    ## # A tibble: 6 × 15
+    ##   order_id product_id add_to_cart_order reordered user_id eval_set order_number
+    ##      <int>      <int>             <int>     <int>   <int> <chr>           <int>
+    ## 1        1      49302                 1         1  112108 train               4
+    ## 2        1      11109                 2         1  112108 train               4
+    ## 3        1      10246                 3         0  112108 train               4
+    ## 4        1      49683                 4         0  112108 train               4
+    ## 5        1      43633                 5         1  112108 train               4
+    ## 6        1      13176                 6         0  112108 train               4
+    ## # … with 8 more variables: order_dow <int>, order_hour_of_day <int>,
+    ## #   days_since_prior_order <int>, product_name <chr>, aisle_id <int>,
+    ## #   department_id <int>, aisle <chr>, department <chr>
+
+``` r
+tail (df)
+```
+
+    ## # A tibble: 6 × 15
+    ##   order_id product_id add_to_cart_order reordered user_id eval_set order_number
+    ##      <int>      <int>             <int>     <int>   <int> <chr>           <int>
+    ## 1  3421063      13565                 2         1  169679 train              30
+    ## 2  3421063      14233                 3         1  169679 train              30
+    ## 3  3421063      35548                 4         1  169679 train              30
+    ## 4  3421070      35951                 1         1  139822 train              15
+    ## 5  3421070      16953                 2         1  139822 train              15
+    ## 6  3421070       4724                 3         1  139822 train              15
+    ## # … with 8 more variables: order_dow <int>, order_hour_of_day <int>,
+    ## #   days_since_prior_order <int>, product_name <chr>, aisle_id <int>,
+    ## #   department_id <int>, aisle <chr>, department <chr>
+
+\#\#There are 1384167 observations and 15 variables. Of those variables,
+4 are characters. Some key variables are order identiifer, product
+identifier, customer identifier, order day of the week, order hour,
+aisle identiier and aisle name. From the header, we see one example of
+an obseration is that the product “Bulgarian Yogurt” was in asile \#
+120.
+
+\#\#I will count the number of aislde IDs and their frequencies. I will
+sort the frequencies in descending order.
+
+``` r
+df %>% group_by(aisle_id) %>% summarize(n_obs = n()) %>% arrange(desc(n_obs))
+```
+
+    ## # A tibble: 134 × 2
+    ##    aisle_id  n_obs
+    ##       <int>  <int>
+    ##  1       83 150609
+    ##  2       24 150473
+    ##  3      123  78493
+    ##  4      120  55240
+    ##  5       21  41699
+    ##  6      115  36617
+    ##  7       84  32644
+    ##  8      107  31269
+    ##  9       91  26240
+    ## 10      112  23635
+    ## # … with 124 more rows
+
+\#On the basis of this output, there are 134 aisle IDs. The aisle ids
+with the highest frequencies are 83, 24, 123, 120, 21, 115, 84, 107, 91,
+112.
