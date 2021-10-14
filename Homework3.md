@@ -201,3 +201,111 @@ mutate_df %>%  pivot_wider(names_from = order_dow, values_from = mean_hour)
     ##   <chr>            <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
     ## 1 Coffee Ice Cream  13.8  14.3  15.4  15.3  15.2  12.3  13.8
     ## 2 Pink Lady Apples  13.4  11.4  11.7  14.2  11.6  12.8  11.9
+
+\#Problem 2 \#I will load the dataset for problem 2, and inspect the
+head and sturcture of the data set.
+
+``` r
+library(p8105.datasets)
+data("brfss_smart2010")
+df_two = brfss_smart2010
+df_two = janitor::clean_names(df_two)
+
+head(df_two)
+```
+
+    ## # A tibble: 6 × 23
+    ##    year locationabbr locationdesc  class  topic  question   response sample_size
+    ##   <int> <chr>        <chr>         <chr>  <chr>  <chr>      <chr>          <int>
+    ## 1  2010 AL           AL - Jeffers… Healt… Overa… How is yo… Excelle…          94
+    ## 2  2010 AL           AL - Jeffers… Healt… Overa… How is yo… Very go…         148
+    ## 3  2010 AL           AL - Jeffers… Healt… Overa… How is yo… Good             208
+    ## 4  2010 AL           AL - Jeffers… Healt… Overa… How is yo… Fair             107
+    ## 5  2010 AL           AL - Jeffers… Healt… Overa… How is yo… Poor              45
+    ## 6  2010 AL           AL - Jeffers… Healt… Fair … Health St… Good or…         450
+    ## # … with 15 more variables: data_value <dbl>, confidence_limit_low <dbl>,
+    ## #   confidence_limit_high <dbl>, display_order <int>, data_value_unit <chr>,
+    ## #   data_value_type <chr>, data_value_footnote_symbol <chr>,
+    ## #   data_value_footnote <chr>, data_source <chr>, class_id <chr>,
+    ## #   topic_id <chr>, location_id <chr>, question_id <chr>, respid <chr>,
+    ## #   geo_location <chr>
+
+``` r
+str(df_two)
+```
+
+    ## tibble [134,203 × 23] (S3: tbl_df/tbl/data.frame)
+    ##  $ year                      : int [1:134203] 2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
+    ##  $ locationabbr              : chr [1:134203] "AL" "AL" "AL" "AL" ...
+    ##  $ locationdesc              : chr [1:134203] "AL - Jefferson County" "AL - Jefferson County" "AL - Jefferson County" "AL - Jefferson County" ...
+    ##  $ class                     : chr [1:134203] "Health Status" "Health Status" "Health Status" "Health Status" ...
+    ##  $ topic                     : chr [1:134203] "Overall Health" "Overall Health" "Overall Health" "Overall Health" ...
+    ##  $ question                  : chr [1:134203] "How is your general health?" "How is your general health?" "How is your general health?" "How is your general health?" ...
+    ##  $ response                  : chr [1:134203] "Excellent" "Very good" "Good" "Fair" ...
+    ##  $ sample_size               : int [1:134203] 94 148 208 107 45 450 152 524 77 316 ...
+    ##  $ data_value                : num [1:134203] 18.9 30 33.1 12.5 5.5 82 18 79.3 20.7 74.9 ...
+    ##  $ confidence_limit_low      : num [1:134203] 14.1 24.9 28.2 9.5 3.5 78.6 14.6 74 15.4 68.6 ...
+    ##  $ confidence_limit_high     : num [1:134203] 23.6 35 38 15.4 7.4 85.3 21.3 84.5 25.9 81.1 ...
+    ##  $ display_order             : int [1:134203] 1 2 3 4 5 6 7 8 9 10 ...
+    ##  $ data_value_unit           : chr [1:134203] "%" "%" "%" "%" ...
+    ##  $ data_value_type           : chr [1:134203] "Crude Prevalence" "Crude Prevalence" "Crude Prevalence" "Crude Prevalence" ...
+    ##  $ data_value_footnote_symbol: chr [1:134203] NA NA NA NA ...
+    ##  $ data_value_footnote       : chr [1:134203] NA NA NA NA ...
+    ##  $ data_source               : chr [1:134203] "BRFSS" "BRFSS" "BRFSS" "BRFSS" ...
+    ##  $ class_id                  : chr [1:134203] "CLASS08" "CLASS08" "CLASS08" "CLASS08" ...
+    ##  $ topic_id                  : chr [1:134203] "Topic41" "Topic41" "Topic41" "Topic41" ...
+    ##  $ location_id               : chr [1:134203] NA NA NA NA ...
+    ##  $ question_id               : chr [1:134203] "GENHLTH" "GENHLTH" "GENHLTH" "GENHLTH" ...
+    ##  $ respid                    : chr [1:134203] "RESP056" "RESP057" "RESP058" "RESP059" ...
+    ##  $ geo_location              : chr [1:134203] "(33.518601, -86.814688)" "(33.518601, -86.814688)" "(33.518601, -86.814688)" "(33.518601, -86.814688)" ...
+    ##  - attr(*, "spec")=
+    ##   .. cols(
+    ##   ..   Year = col_integer(),
+    ##   ..   Locationabbr = col_character(),
+    ##   ..   Locationdesc = col_character(),
+    ##   ..   Class = col_character(),
+    ##   ..   Topic = col_character(),
+    ##   ..   Question = col_character(),
+    ##   ..   Response = col_character(),
+    ##   ..   Sample_Size = col_integer(),
+    ##   ..   Data_value = col_double(),
+    ##   ..   Confidence_limit_Low = col_double(),
+    ##   ..   Confidence_limit_High = col_double(),
+    ##   ..   Display_order = col_integer(),
+    ##   ..   Data_value_unit = col_character(),
+    ##   ..   Data_value_type = col_character(),
+    ##   ..   Data_Value_Footnote_Symbol = col_character(),
+    ##   ..   Data_Value_Footnote = col_character(),
+    ##   ..   DataSource = col_character(),
+    ##   ..   ClassId = col_character(),
+    ##   ..   TopicId = col_character(),
+    ##   ..   LocationID = col_character(),
+    ##   ..   QuestionID = col_character(),
+    ##   ..   RESPID = col_character(),
+    ##   ..   GeoLocation = col_character()
+    ##   .. )
+
+\#I will filter on the “Overall Health” and change the class of the
+response variable into factor, exclude entries that are not between poor
+and excellent, and order the factors from 1 = poor to 5 = excellent.
+
+``` r
+df_two_filter = df_two %>% filter(topic == "Overall Health") %>% filter (response != c("Poor", "Fair", "Good", "Very good", "Excellent")) %>% mutate(response = factor(response, levels =c("Poor", "Fair", "Good", "Very good", "Excellent") )) 
+head(df_two_filter)
+```
+
+    ## # A tibble: 6 × 23
+    ##    year locationabbr locationdesc  class  topic  question   response sample_size
+    ##   <int> <chr>        <chr>         <chr>  <chr>  <chr>      <fct>          <int>
+    ## 1  2010 AL           AL - Jeffers… Healt… Overa… How is yo… Excelle…          94
+    ## 2  2010 AL           AL - Jeffers… Healt… Overa… How is yo… Very go…         148
+    ## 3  2010 AL           AL - Jeffers… Healt… Overa… How is yo… Fair             107
+    ## 4  2010 AL           AL - Jeffers… Healt… Overa… How is yo… Poor              45
+    ## 5  2010 AL           AL - Mobile … Healt… Overa… How is yo… Excelle…          91
+    ## 6  2010 AL           AL - Mobile … Healt… Overa… How is yo… Very go…         177
+    ## # … with 15 more variables: data_value <dbl>, confidence_limit_low <dbl>,
+    ## #   confidence_limit_high <dbl>, display_order <int>, data_value_unit <chr>,
+    ## #   data_value_type <chr>, data_value_footnote_symbol <chr>,
+    ## #   data_value_footnote <chr>, data_source <chr>, class_id <chr>,
+    ## #   topic_id <chr>, location_id <chr>, question_id <chr>, respid <chr>,
+    ## #   geo_location <chr>
