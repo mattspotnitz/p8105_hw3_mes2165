@@ -1,0 +1,86 @@
+---
+title: "Homework3"
+output: github_document
+---
+#Initialization
+````{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+I will load the libraries and the dataset.
+
+
+```{r}
+library(p8105.datasets)
+library(tidyverse)
+library(readxl)
+library(haven)
+data("instacart")
+```
+
+I will inspect the dataset.
+
+```{r}
+df = instacart
+df = janitor::clean_names(df)
+str(df)
+head(df)
+tail (df)
+```
+
+There are 1384167 observations and 15 variables. Of those variables, 4 are characters.  Some key variables are order identiifer, product identifier, customer identifier, order day of the week, order hour, aisle identiier and aisle name. From the header, we see one example of an obseration is that the product "Bulgarian Yogurt" was in asile # 120.
+
+I will count the number of aislde IDs and their frequencies. I will sort the frequencies in descending order.
+```{r}
+df %>% group_by(aisle_id) %>% summarize(n_obs = n()) %>% arrange(desc(n_obs))
+```
+On the basis of this output, there are 134 aisle IDs. The aisle ids with the highest frequencies are 83, 24, 123, 120, 21, 115, 84, 107, 91, 112.
+
+I will make a data frame that filters to aisles with frequencies > 10,000, and then plot frequencies (or number of items) vs. Aisle ID.
+```{r}
+df_filter = df %>% group_by(aisle_id) %>% summarize(n_obs = n()) %>% filter(n_obs > 10000) %>% arrange(aisle_id)
+
+ggplot(df_filter, aes(x = aisle_id, y = n_obs)) + geom_point() + 
+  labs(
+    title = "Number of Items vs. Aisle ID",
+    x = "Aisle ID",
+    y = "Number of Items",
+    caption = "Data from Instacart"
+  )  + theme_minimal()
+png('mes2165_homework3_problem1.png')
+```
+
+
+Now I will make the table of the most common items it the aisles named "baking ingredients", "dog food care" or "packaged vegetables fruits".  I will filter on those aisles, group them, count them, and then filter to the 3 most common items.
+
+```{r}
+df_food = df %>% filter (aisle == "baking ingredients" | aisle ==  "dog food care" | aisle == "packaged vegetables fruits") %>% group_by(aisle) %>% count(product_id, product_name)
+
+df_food_filter = df_food %>% filter(rank(desc(n))<= 3) %>% arrange(aisle, desc(n))
+                    
+df_food_filter
+```
+#Problem 1 -fourth part. 
+
+Table of hour of the day when pink lady apples and coffee ice cream are ordered.
+```{r}
+mutate_df = df  %>% filter ((product_name == "Pink Lady Apples") | (product_name == "Coffee Ice Cream")) %>% group_by(product_name, order_dow) %>% summarize(mean_hour = mean(order_hour_of_day))
+
+mutate_df %>%  pivot_wider(names_from = order_dow, values_from = mean_hour)
+```
+
+#Problem 2
+I will load the dataset for problem 2, and inspect the head and sturcture of the data set.
+```{r}
+library(p8105.datasets)
+data("brfss_smart2010")
+df_two = brfss_smart2010
+df_two = janitor::clean_names(df_two)
+
+head(df_two)
+str(df_two)
+```
+I will filter on the "Overall Health" and change the class of the response variable into factor, exclude entries that are not between poor and excellent, and order the factors from 1 = poor to 5 = excellent.
+```{r}
+df_two_filter = df_two %>% filter(topic == "Overall Health") %>% filter (response != c("Poor", "Fair", "Good", "Very good", "Excellent")) %>% mutate(response = factor(response, levels =c("Poor", "Fair", "Good", "Very good", "Excellent") )) 
+head(df_two_filter)
+```

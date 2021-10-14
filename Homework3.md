@@ -3,7 +3,7 @@ Homework3
 
 \#Initialization
 
-\#\#load the dataset
+I will load the libraries and the dataset.
 
 ``` r
 library(p8105.datasets)
@@ -27,7 +27,7 @@ library(haven)
 data("instacart")
 ```
 
-\#\#inspect the dataset
+I will inspect the dataset.
 
 ``` r
 df = instacart
@@ -104,15 +104,15 @@ tail (df)
     ## #   days_since_prior_order <int>, product_name <chr>, aisle_id <int>,
     ## #   department_id <int>, aisle <chr>, department <chr>
 
-\#\#There are 1384167 observations and 15 variables. Of those variables,
-4 are characters. Some key variables are order identiifer, product
+There are 1384167 observations and 15 variables. Of those variables, 4
+are characters. Some key variables are order identiifer, product
 identifier, customer identifier, order day of the week, order hour,
 aisle identiier and aisle name. From the header, we see one example of
 an obseration is that the product “Bulgarian Yogurt” was in asile \#
 120.
 
-\#\#I will count the number of aislde IDs and their frequencies. I will
-sort the frequencies in descending order.
+I will count the number of aislde IDs and their frequencies. I will sort
+the frequencies in descending order.
 
 ``` r
 df %>% group_by(aisle_id) %>% summarize(n_obs = n()) %>% arrange(desc(n_obs))
@@ -133,11 +133,10 @@ df %>% group_by(aisle_id) %>% summarize(n_obs = n()) %>% arrange(desc(n_obs))
     ## 10      112  23635
     ## # … with 124 more rows
 
-\#On the basis of this output, there are 134 aisle IDs. The aisle ids
-with the highest frequencies are 83, 24, 123, 120, 21, 115, 84, 107, 91,
-112.
+On the basis of this output, there are 134 aisle IDs. The aisle ids with
+the highest frequencies are 83, 24, 123, 120, 21, 115, 84, 107, 91, 112.
 
-\#I will make a data frame that filters to aisles with frequencies &gt;
+I will make a data frame that filters to aisles with frequencies &gt;
 10,000, and then plot frequencies (or number of items) vs. Aisle ID.
 
 ``` r
@@ -154,10 +153,14 @@ ggplot(df_filter, aes(x = aisle_id, y = n_obs)) + geom_point() +
 
 ![](Homework3_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
-\#\#Now I will make the table of the most common items it the aisles
-named “baking ingredients”, “dog food care” or “packaged vegetables
-fruits”. I will filter on those aisles, group them, count them, and then
-filter to the 3 most common items.
+``` r
+png('mes2165_homework3_problem1.png')
+```
+
+Now I will make the table of the most common items it the aisles named
+“baking ingredients”, “dog food care” or “packaged vegetables fruits”. I
+will filter on those aisles, group them, count them, and then filter to
+the 3 most common items.
 
 ``` r
 df_food = df %>% filter (aisle == "baking ingredients" | aisle ==  "dog food care" | aisle == "packaged vegetables fruits") %>% group_by(aisle) %>% count(product_id, product_name)
@@ -181,9 +184,10 @@ df_food_filter
     ## 8 packaged vegetables fruits      27966 Organic Raspberries                 5546
     ## 9 packaged vegetables fruits      39275 Organic Blueberries                 4966
 
-\#\#Problem 1 -fourth part. Table of hour of the day when pink lady
-apples and coffee ice cream are ordered. I am stumped on part four of
-problem 1 too!!!
+\#Problem 1 -fourth part.
+
+Table of hour of the day when pink lady apples and coffee ice cream are
+ordered.
 
 ``` r
 mutate_df = df  %>% filter ((product_name == "Pink Lady Apples") | (product_name == "Coffee Ice Cream")) %>% group_by(product_name, order_dow) %>% summarize(mean_hour = mean(order_hour_of_day))
@@ -202,8 +206,8 @@ mutate_df %>%  pivot_wider(names_from = order_dow, values_from = mean_hour)
     ## 1 Coffee Ice Cream  13.8  14.3  15.4  15.3  15.2  12.3  13.8
     ## 2 Pink Lady Apples  13.4  11.4  11.7  14.2  11.6  12.8  11.9
 
-\#Problem 2 \#I will load the dataset for problem 2, and inspect the
-head and sturcture of the data set.
+\#Problem 2 I will load the dataset for problem 2, and inspect the head
+and sturcture of the data set.
 
 ``` r
 library(p8105.datasets)
@@ -285,7 +289,7 @@ str(df_two)
     ##   ..   GeoLocation = col_character()
     ##   .. )
 
-\#I will filter on the “Overall Health” and change the class of the
+I will filter on the “Overall Health” and change the class of the
 response variable into factor, exclude entries that are not between poor
 and excellent, and order the factors from 1 = poor to 5 = excellent.
 
