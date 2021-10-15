@@ -364,3 +364,16 @@ df_two_excellent = df_two_filter %>% filter(response == "Excellent") %>% group_b
 ``` r
 view(df_two_excellent)
 ```
+
+I will now make a spaghetti plot of of average data value over time
+within a state.
+
+``` r
+ggplot(df_two_excellent, aes(x = year, y = mean_data_value, group = state)) + geom_line()
+```
+
+![](Homework3_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+``` r
+png('mes2165_homework3_problem2_spaghetti.png')
+```
