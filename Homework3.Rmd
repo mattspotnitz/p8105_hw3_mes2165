@@ -46,7 +46,7 @@ ggplot(df_filter, aes(x = aisle_id, y = n_obs)) + geom_point() +
     y = "Number of Items",
     caption = "Data from Instacart"
   )  + theme_minimal()
-png('mes2165_homework3_problem1.png')
+pdf('mes2165_homework3_problem1.pdf')
 ```
 
 
@@ -117,7 +117,7 @@ ggplot(df_two_excellent, aes(x = year, y = mean_data_value, group = state)) + ge
     y = "Mean Data Value",
     caption = "Data from BRFSS"
   )  + theme_minimal()
-png('mes2165_homework3_problem2_spaghetti.png')
+pdf('mes2165_homework3_problem2_spaghetti.pdf')
 ```
 I will make a two-panel plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State.
 
@@ -136,7 +136,7 @@ ggplot(df_two_NY, aes(x = response, y = data_value, group = location)) + geom_po
     y = "Data Value",
     caption = "Data from BRFSS"
   )  + theme_minimal()
-png('mes2165_homework3_problem2_Data Value Distributions NY.png')
+pdf('mes2165_homework3_problem2_Data Value Distributions NY.pdf')
 ```
 #Problem 3
 I will load and view the data set
@@ -182,6 +182,6 @@ ggplot(df_accel_day, aes(x=day_id, y= sum_activity, color = day)) + geom_point()
     y = "Daily Activity (counts)",
     caption = "Accelerometer Data"
   )  + theme_minimal()
-png('mes2165_homework3_problem3_trend.png')
+pdf('mes2165_homework3_problem3_trend.pdf')
 ```
 There are some days where the patient was very active, otherwise the patient's activity was low. The patient was more active on 2 Mondays and 2 Thursdays, 1 Friday, 1 Sunday, and  Tuesday.

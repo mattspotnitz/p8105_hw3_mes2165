@@ -154,7 +154,7 @@ ggplot(df_filter, aes(x = aisle_id, y = n_obs)) + geom_point() +
 ![](Homework3_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
-png('mes2165_homework3_problem1.png')
+pdf('mes2165_homework3_problem1.pdf')
 ```
 
 Now I will make the table of the most common items it the aisles named
@@ -381,7 +381,7 @@ ggplot(df_two_excellent, aes(x = year, y = mean_data_value, group = state)) + ge
 ![](Homework3_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
-png('mes2165_homework3_problem2_spaghetti.png')
+pdf('mes2165_homework3_problem2_spaghetti.pdf')
 ```
 
 I will make a two-panel plot showing, for the years 2006, and 2010,
@@ -455,7 +455,7 @@ ggplot(df_two_NY, aes(x = response, y = data_value, group = location)) + geom_po
 ![](Homework3_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ``` r
-png('mes2165_homework3_problem2_Data Value Distributions NY.png')
+pdf('mes2165_homework3_problem2_Data Value Distributions NY.pdf')
 ```
 
 \#Problem 3 I will load and view the data set
@@ -3744,7 +3744,7 @@ ggplot(df_accel_day, aes(x=day_id, y= sum_activity, color = day)) + geom_point()
 ![](Homework3_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 ``` r
-png('mes2165_homework3_problem3_trend.png')
+pdf('mes2165_homework3_problem3_trend.pdf')
 ```
 
 There are some days where the patient was very active, otherwise the
