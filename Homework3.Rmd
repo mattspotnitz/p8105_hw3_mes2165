@@ -148,7 +148,40 @@ tail(df_accel)
 str(df_accel)
 view(df_accel)
 ```
-I will make a weekend or weekday and weekend variables. First, I will convert the days to a factor variable.
+I will make a weekend or weekday and weekend variables, which will be integer values. Then, I will convert the days to a factor variable.
 ```{r}
-df_accel_edit = df_accel #%>% mutate(weekday = (day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))) %>% pull(weekday)
+df_accel_edit = df_accel %>% mutate(weekday = (day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))) %>% mutate(weekend = (day %in% c("Saturday", "Sunday"))) %>%  mutate(weekend = as.integer(as.logical(weekend))) %>% mutate(weekday = as.integer(as.logical(weekday))) %>% mutate(day = as.factor(day))
+
+#I am checking the accuracy of the weekday and weekend variables
+df_accel_edit %>% pull(day, weekday)
+df_accel_edit %>% pull(day, weekend)
 ```
+I will now describe the resulting dataset.
+```{r}
+str(df_accel_edit)
+view(df_accel_edit)
+```
+There are a total of 35 rows and 1445 columns.  Day is a character variable, week and day id are integer variables, and weekend and weekday are integer variables. The rest are double variables that record activity by the minute.
+
+I will create a variable for activity by day. I will take the sum activity over all columns and view the result.
+```{r}
+df_accel_day = df_accel_edit %>% group_by(day_id) %>% summarize(sum_activity = sum(activity_1:activity_1440), day, weekday, weekend) %>% arrange(day_id)
+
+view(df_accel_day)
+knitr::kable(df_accel_day)
+```
+Overall, the patient shows low activity with the excpetion of some days of high actibvity. 
+
+To look for trends, I will make  scatter plot of activity by day_id
+```{r}
+library(patchwork)
+ggplot(df_accel_day, aes(x=day_id, y= sum_activity, color = day)) + geom_point() +
+    labs(
+    title = "Daily Activity vs. Day ID",
+    x = "Day ID",
+    y = "Daily Activity (counts)",
+    caption = "Accelerometer Data"
+  )  + theme_minimal()
+png('mes2165_homework3_problem3_trend.png')
+```
+There are some days where the patient was very active, otherwise the patient's activity was low. The patient was more active on 2 Mondays and 2 Thursdays, 1 Friday, 1 Sunday, and  Tuesday.
