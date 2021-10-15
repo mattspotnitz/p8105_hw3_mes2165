@@ -3726,7 +3726,7 @@ knitr::kable(df_accel_day)
 |      35 |        1.0000 | Wednesday |       1 |       0 |
 
 Overall, the patient shows low activity with the excpetion of some days
-of high actibvity.
+of high activity.
 
 To look for trends, I will make scatter plot of activity by day\_id
 

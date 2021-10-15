@@ -170,9 +170,9 @@ df_accel_day = df_accel_edit %>% group_by(day_id) %>% summarize(sum_activity = s
 view(df_accel_day)
 knitr::kable(df_accel_day)
 ```
-Overall, the patient shows low activity with the excpetion of some days of high actibvity. 
+Overall, the patient shows low activity with the excpetion of some days of high activity. 
 
-To look for trends, I will make  scatter plot of activity by day_id
+To look for trends, I will make scatter plot of activity by day_id
 ```{r}
 library(patchwork)
 ggplot(df_accel_day, aes(x=day_id, y= sum_activity, color = day)) + geom_point() +
