@@ -313,3 +313,54 @@ head(df_two_filter)
     ## #   data_value_footnote <chr>, data_source <chr>, class_id <chr>,
     ## #   topic_id <chr>, location_id <chr>, question_id <chr>, respid <chr>,
     ## #   geo_location <chr>
+
+I will identify the states that were observed in 7 or more locations in
+2002.
+
+``` r
+df_2002 = df_two_filter %>% filter (year == 2002) %>% group_by (locationabbr) %>% count() %>% filter(n>= 7) %>% arrange(desc(n))
+
+df_2002_states = df_2002 %>% pull(locationabbr)
+df_2002_states
+```
+
+    ##  [1] "PA" "MA" "NJ" "CT" "FL" "NC" "MD" "NH" "NY" "UT" "RI" "CO" "MI" "MN" "WA"
+    ## [16] "OH" "HI" "VT" "DE" "GA" "IL" "LA" "NE" "OK" "OR" "SC" "KS" "AZ" "ID" "IN"
+    ## [31] "ME" "MO" "NV" "SD" "TN" "TX"
+
+The states that were observed in 7 or more locations in 2002 were: PA,
+MA, NJ, CT, FL, NC, MD, NH, NY, UT, RI, CO, MI, MN, WA, OH, HI, VT, DE,
+GA, IL, LA, NE, OK, OR, SC, KS, AZ, ID, IN, ME, MO, NV, SD, TN, TX.
+
+I will repeat this process to identify the states that were observed in
+7 or more locations in 2010.
+
+``` r
+df_2010 = df_two_filter %>% filter (year == 2010) %>% group_by (locationabbr) %>% count() %>% filter(n>= 7) %>% arrange(desc(n))
+
+df_2010_states = df_2010 %>% pull(locationabbr)
+df_2010_states
+```
+
+    ##  [1] "FL" "NJ" "TX" "MD" "CA" "NC" "NE" "WA" "MA" "NY" "OH" "SC" "CO" "PA" "VT"
+    ## [16] "ID" "ME" "NM" "UT" "LA" "CT" "MN" "NH" "RI" "TN" "HI" "GA" "MI" "OR" "KS"
+    ## [31] "AL" "AR" "AZ" "DE" "IN" "MO" "MT" "ND" "OK" "NV" "IA" "IL" "MS" "SD" "WY"
+
+The states that were observed in 7 or more locations in 2002 were: FL,
+NJ, TX, MD, CA, NC, NE, WA, MA, NY, OH, SC, CO, PA, VT, ID, ME, NM, UT,
+LA, CT, MN, NH, RI, TN, HI, GA, MI, OR, KS, AL, AR, AZ, DE, IN, MO, MT,
+ND, OK, NV, IA, IL, MS, SD, WY
+
+I will make a data set that is limited to excellent responses and
+contains, year, state, and a variable that averages the data\_value
+across locations within a state.
+
+``` r
+df_two_excellent = df_two_filter %>% filter(response == "Excellent") %>% group_by (locationabbr, locationdesc, year) %>% summarize (mean_data_value = mean(data_value)) %>% rename(state = locationabbr) %>% rename(location = locationdesc)
+```
+
+    ## `summarise()` has grouped output by 'locationabbr', 'locationdesc'. You can override using the `.groups` argument.
+
+``` r
+view(df_two_excellent)
+```

@@ -84,3 +84,27 @@ I will filter on the "Overall Health" and change the class of the response varia
 df_two_filter = df_two %>% filter(topic == "Overall Health") %>% filter (response != c("Poor", "Fair", "Good", "Very good", "Excellent")) %>% mutate(response = factor(response, levels =c("Poor", "Fair", "Good", "Very good", "Excellent") )) 
 head(df_two_filter)
 ```
+I will identify the states that were observed in 7 or more locations in 2002.
+```{r} 
+df_2002 = df_two_filter %>% filter (year == 2002) %>% group_by (locationabbr) %>% count() %>% filter(n>= 7) %>% arrange(desc(n))
+
+df_2002_states = df_2002 %>% pull(locationabbr)
+df_2002_states
+```
+The states that were observed in 7 or more locations in 2002 were: PA, MA, NJ, CT, FL, NC, MD, NH, NY, UT, RI, CO, MI, MN, WA, OH, HI, VT, DE, GA, IL, LA, NE, OK, OR, SC, KS, AZ, ID, IN, ME, MO, NV, SD, TN, TX.
+
+I will repeat this process to identify the states that were observed in 7 or more locations in 2010.
+```{r} 
+df_2010 = df_two_filter %>% filter (year == 2010) %>% group_by (locationabbr) %>% count() %>% filter(n>= 7) %>% arrange(desc(n))
+
+df_2010_states = df_2010 %>% pull(locationabbr)
+df_2010_states
+```
+The states that were observed in 7 or more locations in 2002 were: FL, NJ, TX, MD, CA, NC, NE, WA, MA, NY, OH, SC, CO, PA, VT, ID, ME, NM, UT, LA, CT, MN, NH, RI, TN, HI, GA, MI, OR, KS, AL, AR, AZ, DE, IN, MO, MT, ND, OK, NV, IA, IL, MS, SD, WY
+
+I will make a data set that is limited to excellent responses and contains, year, state, and a variable that averages the data_value across locations within a state.
+```{r}
+df_two_excellent = df_two_filter %>% filter(response == "Excellent") %>% group_by (locationabbr, locationdesc, year) %>% summarize (mean_data_value = mean(data_value)) %>% rename(state = locationabbr) %>% rename(location = locationdesc)
+
+view(df_two_excellent)
+```
