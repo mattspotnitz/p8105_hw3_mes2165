@@ -138,3 +138,17 @@ ggplot(df_two_NY, aes(x = response, y = data_value, group = location)) + geom_po
   )  + theme_minimal()
 png('mes2165_homework3_problem2_Data Value Distributions NY.png')
 ```
+#Problem 3
+I will load and view the data set
+```{r}
+df_accel = read_csv("accel_data.csv")
+df_accel = janitor::clean_names(df_accel)
+head(df_accel)
+tail(df_accel)
+str(df_accel)
+view(df_accel)
+```
+I will make a weekend or weekday and weekend variables. First, I will convert the days to a factor variable.
+```{r}
+df_accel_edit = df_accel #%>% mutate(weekday = (day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))) %>% pull(weekday)
+```
