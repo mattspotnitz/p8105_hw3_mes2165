@@ -369,11 +369,91 @@ I will now make a spaghetti plot of of average data value over time
 within a state.
 
 ``` r
-ggplot(df_two_excellent, aes(x = year, y = mean_data_value, group = state)) + geom_line()
+ggplot(df_two_excellent, aes(x = year, y = mean_data_value, group = state)) + geom_line()+
+  labs(
+    title = "Spaghetti Plot of Average Data Value by Year and State",
+    x = "Year",
+    y = "Mean Data Value",
+    caption = "Data from BRFSS"
+  )  + theme_minimal()
 ```
 
 ![](Homework3_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
 png('mes2165_homework3_problem2_spaghetti.png')
+```
+
+I will make a two-panel plot showing, for the years 2006, and 2010,
+distribution of data\_value for responses (“Poor” to “Excellent”) among
+locations in NY State.
+
+First I will filter the data and rename some columns.
+
+``` r
+df_two_NY = df_two_filter %>% filter((year == 2006) | (year==2010)) %>% filter (response == c("Poor", "Fair", "Good", "Very good", "Excellent")) %>% filter (locationabbr == "NY") %>% rename(state = locationabbr) %>% rename(location = locationdesc)
+```
+
+    ## Warning in `==.default`(response, c("Poor", "Fair", "Good", "Very good", :
+    ## longer object length is not a multiple of shorter object length
+
+    ## Warning in is.na(e1) | is.na(e2): longer object length is not a multiple of
+    ## shorter object length
+
+``` r
+head(df_two_NY)
+```
+
+    ## # A tibble: 6 × 23
+    ##    year state location   class  topic  question  response sample_size data_value
+    ##   <int> <chr> <chr>      <chr>  <chr>  <chr>     <fct>          <int>      <dbl>
+    ## 1  2010 NY    NY - Bron… Healt… Overa… How is y… Excelle…          61       17.6
+    ## 2  2010 NY    NY - Bron… Healt… Overa… How is y… Fair              86       16.7
+    ## 3  2010 NY    NY - King… Healt… Overa… How is y… Very go…         246       27.7
+    ## 4  2010 NY    NY - King… Healt… Overa… How is y… Poor              63        5.5
+    ## 5  2010 NY    NY - New … Healt… Overa… How is y… Fair             127       10.3
+    ## 6  2010 NY    NY - Suff… Healt… Overa… How is y… Very go…         192       35.5
+    ## # … with 14 more variables: confidence_limit_low <dbl>,
+    ## #   confidence_limit_high <dbl>, display_order <int>, data_value_unit <chr>,
+    ## #   data_value_type <chr>, data_value_footnote_symbol <chr>,
+    ## #   data_value_footnote <chr>, data_source <chr>, class_id <chr>,
+    ## #   topic_id <chr>, location_id <chr>, question_id <chr>, respid <chr>,
+    ## #   geo_location <chr>
+
+``` r
+tail(df_two_NY)
+```
+
+    ## # A tibble: 6 × 23
+    ##    year state location   class  topic  question  response sample_size data_value
+    ##   <int> <chr> <chr>      <chr>  <chr>  <chr>     <fct>          <int>      <dbl>
+    ## 1  2006 NY    NY - King… Healt… Overa… How is y… Good             163       36.3
+    ## 2  2006 NY    NY - Nass… Healt… Overa… How is y… Excelle…          81       21.7
+    ## 3  2006 NY    NY - New … Healt… Overa… How is y… Very go…         161       32.3
+    ## 4  2006 NY    NY - New … Healt… Overa… How is y… Excelle…         119       28.8
+    ## 5  2006 NY    NY - Quee… Healt… Overa… How is y… Very go…         120       25.9
+    ## 6  2006 NY    NY - Quee… Healt… Overa… How is y… Poor              16        2.3
+    ## # … with 14 more variables: confidence_limit_low <dbl>,
+    ## #   confidence_limit_high <dbl>, display_order <int>, data_value_unit <chr>,
+    ## #   data_value_type <chr>, data_value_footnote_symbol <chr>,
+    ## #   data_value_footnote <chr>, data_source <chr>, class_id <chr>,
+    ## #   topic_id <chr>, location_id <chr>, question_id <chr>, respid <chr>,
+    ## #   geo_location <chr>
+
+Now, I will plot the data.
+
+``` r
+ggplot(df_two_NY, aes(x = response, y = data_value, group = location)) + geom_point() + facet_wrap(.~year) +
+  labs(
+    title = "Data Value Distribution for 2006 and 2010 by Response and NY Location",
+    x = "Response",
+    y = "Data Value",
+    caption = "Data from BRFSS"
+  )  + theme_minimal()
+```
+
+![](Homework3_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+``` r
+png('mes2165_homework3_problem2_Data Value Distributions NY.png')
 ```

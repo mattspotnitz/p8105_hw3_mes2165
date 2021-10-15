@@ -110,6 +110,31 @@ view(df_two_excellent)
 ```
 I will now make a spaghetti plot of of average data value over time within a state.
 ```{r}
-ggplot(df_two_excellent, aes(x = year, y = mean_data_value, group = state)) + geom_line()
+ggplot(df_two_excellent, aes(x = year, y = mean_data_value, group = state)) + geom_line()+
+  labs(
+    title = "Spaghetti Plot of Average Data Value by Year and State",
+    x = "Year",
+    y = "Mean Data Value",
+    caption = "Data from BRFSS"
+  )  + theme_minimal()
 png('mes2165_homework3_problem2_spaghetti.png')
+```
+I will make a two-panel plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State.
+
+First I will filter the data and rename some columns.
+```{r}
+df_two_NY = df_two_filter %>% filter((year == 2006) | (year==2010)) %>% filter (response == c("Poor", "Fair", "Good", "Very good", "Excellent")) %>% filter (locationabbr == "NY") %>% rename(state = locationabbr) %>% rename(location = locationdesc)
+head(df_two_NY)
+tail(df_two_NY)
+```
+Now, I will plot the data.
+```{r}
+ggplot(df_two_NY, aes(x = response, y = data_value, group = location)) + geom_point() + facet_wrap(.~year) +
+  labs(
+    title = "Data Value Distribution for 2006 and 2010 by Response and NY Location",
+    x = "Response",
+    y = "Data Value",
+    caption = "Data from BRFSS"
+  )  + theme_minimal()
+png('mes2165_homework3_problem2_Data Value Distributions NY.png')
 ```
