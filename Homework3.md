@@ -143,7 +143,7 @@ I will make a data frame that filters to aisles with frequencies &gt;
 df_filter = df %>% group_by(aisle_id) %>% summarize(n_obs = n()) %>% filter(n_obs > 10000) %>% arrange(aisle_id)
 
 ggplot(df_filter, aes(x = aisle_id, y = n_obs)) + geom_point() + 
-  labs(
+  labs( 
     title = "Number of Items vs. Aisle ID",
     x = "Aisle ID",
     y = "Number of Items",
@@ -154,7 +154,7 @@ ggplot(df_filter, aes(x = aisle_id, y = n_obs)) + geom_point() +
 ![](Homework3_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
-pdf('mes2165_homework3_problem1.pdf')
+pdf('mes2165_homework3_problem1.pdf') #This code exports the plot
 ```
 
 Now I will make the table of the most common items it the aisles named
@@ -163,11 +163,11 @@ will filter on those aisles, group them, count them, and then filter to
 the 3 most common items.
 
 ``` r
-df_food = df %>% filter (aisle == "baking ingredients" | aisle ==  "dog food care" | aisle == "packaged vegetables fruits") %>% group_by(aisle) %>% count(product_id, product_name)
+df_food = df %>% filter (aisle == "baking ingredients" | aisle ==  "dog food care" | aisle == "packaged vegetables fruits") %>% group_by(aisle) %>% count(product_id, product_name) #I am filtering on baking ingredients, dog food care, and packaged vegetables aisles, and counting the product frequencies.
 
-df_food_filter = df_food %>% filter(rank(desc(n))<= 3) %>% arrange(aisle, desc(n))
+df_food_filter = df_food %>% filter(rank(desc(n))<= 3) %>% arrange(aisle, desc(n)) #I am filtering on the 3 most common items.
                     
-df_food_filter
+df_food_filter #This code helps me iew the dataset
 ```
 
     ## # A tibble: 9 × 4
@@ -184,18 +184,17 @@ df_food_filter
     ## 8 packaged vegetables fruits      27966 Organic Raspberries                 5546
     ## 9 packaged vegetables fruits      39275 Organic Blueberries                 4966
 
-\#Problem 1 -fourth part.
-
 Table of hour of the day when pink lady apples and coffee ice cream are
 ordered.
 
 ``` r
-mutate_df = df  %>% filter ((product_name == "Pink Lady Apples") | (product_name == "Coffee Ice Cream")) %>% group_by(product_name, order_dow) %>% summarize(mean_hour = mean(order_hour_of_day))
+mutate_df = df  %>% filter ((product_name == "Pink Lady Apples") | (product_name == "Coffee Ice Cream")) %>% group_by(product_name, order_dow) %>% summarize(mean_hour = mean(order_hour_of_day))  #I am filtering on pink laddy apples and coffe ice cream. Also, I am calculating the mean hourof day for the order.
 ```
 
     ## `summarise()` has grouped output by 'product_name'. You can override using the `.groups` argument.
 
 ``` r
+#Now I will make a pivot table for days of the week
 mutate_df %>%  pivot_wider(names_from = order_dow, values_from = mean_hour)
 ```
 
@@ -295,6 +294,7 @@ and excellent, and order the factors from 1 = poor to 5 = excellent.
 
 ``` r
 df_two_filter = df_two %>% filter(topic == "Overall Health") %>% filter (response != c("Poor", "Fair", "Good", "Very good", "Excellent")) %>% mutate(response = factor(response, levels =c("Poor", "Fair", "Good", "Very good", "Excellent") )) 
+
 head(df_two_filter)
 ```
 
@@ -356,7 +356,7 @@ contains, year, state, and a variable that averages the data\_value
 across locations within a state.
 
 ``` r
-df_two_excellent = df_two_filter %>% filter(response == "Excellent") %>% group_by (locationabbr, locationdesc, year) %>% summarize (mean_data_value = mean(data_value)) %>% rename(state = locationabbr) %>% rename(location = locationdesc)
+df_two_excellent = df_two_filter %>% filter(response == "Excellent") %>% group_by (locationabbr, locationdesc, year) %>% summarize (mean_data_value = mean(data_value)) %>% rename(state = locationabbr) %>% rename(location = locationdesc) ##I renamed "locationabbr" and "locationddec" to more intuitive names.
 ```
 
     ## `summarise()` has grouped output by 'locationabbr', 'locationdesc'. You can override using the `.groups` argument.
@@ -3681,10 +3681,10 @@ I will create a variable for activity by day. I will take the sum
 activity over all columns and view the result.
 
 ``` r
-df_accel_day = df_accel_edit %>% group_by(day_id) %>% summarize(sum_activity = sum(activity_1:activity_1440), day, weekday, weekend) %>% arrange(day_id)
+df_accel_day = df_accel_edit %>% group_by(day_id) %>% summarize(sum_activity = sum(activity_1:activity_1440), day, weekday, weekend) %>% arrange(day_id) # I grouped by day, and summed over all activity columns and
 
 view(df_accel_day)
-knitr::kable(df_accel_day)
+knitr::kable(df_accel_day) #I tabulated the results
 ```
 
 | day\_id | sum\_activity | day       | weekday | weekend |
